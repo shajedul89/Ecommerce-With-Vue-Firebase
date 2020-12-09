@@ -23,7 +23,38 @@
           </div>
           <div class="col-md-3"></div>
       </div>
+
+      <div class="col-md-12">
+        <div class="row">
+          <div class="col-md-3"></div>
+          <div class="col-md-6">
+             <h3>Products list</h3>
+
+            <table class="table table-bodered">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Price</th>
+                </tr>
+              </thead>
+
+              <tbody>
+
+                <tr v-for="product in products" :key="product">
+                  <td> {{product.name}} </td>
+                  <td> {{product.price}} </td>
+                </tr>
+
+
+              </tbody>
+            </table>
+          </div>
+          <div class="col-md-3"></div>
+        </div>
+      </div>
     </div>
+
+
     
     
   </div>
@@ -39,6 +70,8 @@ export default {
   data(){
     return {
 
+      products:[],
+
       product:{
       name:null,
       price:null,
@@ -47,12 +80,23 @@ export default {
     }
   },
   methods:{
+
+        readData(){
+                        db.collection("products").get().then((querySnapshot) => {
+                querySnapshot.forEach((doc) => {
+                    // doc.data() is never undefined for query doc snapshots
+                    this.products.push(doc.data());
+                });
+            });
+        },
+    
           saveData(){
 
             db.collection("products").add(this.product)
       .then((docRef) => {
           console.log("Document written with ID: ", docRef.id);
           this.reset();
+          this.readData();
       })
       .catch(function(error) {
           console.error("Error adding document: ", error);
@@ -62,9 +106,12 @@ export default {
 
     reset(){
       Object.assign(this.$data, this.$options.data.apply(this));
+    },
+  },
+
+  created(){
+       this.readData();
     }
-    
-  }
 };
 </script>
 
