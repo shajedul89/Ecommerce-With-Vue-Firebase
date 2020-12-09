@@ -1,4 +1,5 @@
 import firebase from 'firebase';
+require("firebase/firestore");
 var firebaseConfig = {
     apiKey: "AIzaSyDvRrOy9MyuSwv8u5VW0BhW2oXQhN7eX5A",
     authDomain: "vue-shop-88.firebaseapp.com",
@@ -10,5 +11,9 @@ var firebaseConfig = {
     measurementId: "G-C5WMHQ5RVK"
   };
   // Initialize Firebase
-  export const fb= firebase.initializeApp(firebaseConfig);
+  const fb = firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+
+  export{fb,db};
+
   firebase.analytics();
